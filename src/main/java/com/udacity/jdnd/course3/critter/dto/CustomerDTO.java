@@ -20,5 +20,5 @@ public class CustomerDTO {
     private String name;
     private String phoneNumber;
     private String notes;
-    private List<Long> petIds = new ArrayList<>();
+    private List<Long> petIds;
 }

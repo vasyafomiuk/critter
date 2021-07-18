@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "pets")
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"customer"})
+@Getter
+@Setter
+@ToString(exclude = "owner")
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +25,7 @@ public class Pet {
     private String name;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
-    private Customer customer;
+    private Customer owner;
 //    @Column(name = "owner_id")
 //    private Long ownerId;
 
@@ -37,18 +36,13 @@ public class Pet {
     @Enumerated(EnumType.STRING)
     private PetType type;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "pets_schedule",
-            joinColumns = @JoinColumn(name = "pet_id"),
-            inverseJoinColumns = @JoinColumn(name = "schedule_id")
-    )
+    @ManyToMany(mappedBy = "pets")
     private List<Schedule> scheduleList = new ArrayList<>();
 
     public PetDTO toDto() {
         PetDTO petDTO = new PetDTO();
         BeanUtils.copyProperties(this, petDTO);
-        petDTO.setOwnerId(this.customer.getId());
+        petDTO.setOwnerId(this.owner.getId());
         return petDTO;
     }
 }

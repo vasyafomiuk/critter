@@ -22,22 +22,17 @@ import java.util.TreeSet;
 public class Employee extends User {
     @ElementCollection(targetClass = EmployeeSkill.class, fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "employee_skills")
-    @Column(name = "skills")
+    @CollectionTable(name = "employee_skills", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "skill")
     private Set<EmployeeSkill> skills;
 
     @ElementCollection(targetClass = DayOfWeek.class, fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "availability_days")
+    @CollectionTable(name = "availability_days", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "day")
     private Set<DayOfWeek> daysAvailable;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "employees_schedule",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "schedule_id")
-    )
+    @ManyToMany(mappedBy = "employees")
     private List<Schedule> scheduleList = new ArrayList<>();
 
     public EmployeeDTO toDto() {

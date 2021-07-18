@@ -12,26 +12,28 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@Data
 @DiscriminatorValue("customer")
 public class Customer extends User {
     private String phoneNumber;
-
     private String notes;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    @OneToMany(
+            mappedBy = "owner",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            targetEntity = Pet.class)
     private List<Pet> pets = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     @JoinTable(
             name = "customers_schedule",
-            joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "schedule_id")
+            joinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id")
     )
     private List<Schedule> scheduleList = new ArrayList<>();
 
@@ -39,6 +41,10 @@ public class Customer extends User {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(this, customerDTO);
         customerDTO.setPetIds(this.pets.stream().map(Pet::getId).collect(Collectors.toList()));
+        System.out.println();
+        System.out.println("CUSTOMER :: " + this);
+        System.out.println("CUSTOMER DTO :: " + customerDTO);
+        System.out.println();
         return customerDTO;
     }
 

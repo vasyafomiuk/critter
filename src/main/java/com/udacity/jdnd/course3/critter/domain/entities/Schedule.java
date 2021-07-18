@@ -23,14 +23,21 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scheduleId;
 
-    @ManyToMany(mappedBy = "scheduleList")
+    @ManyToMany
+    @JoinTable(
+            name = "schedule_employee",
+            joinColumns = @JoinColumn(name = "scheduleId"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
+    )
     private List<Employee> employees;
 
-    @ManyToMany(mappedBy = "scheduleList")
+    @ManyToMany
+    @JoinTable(
+            name = "schedule_pet",
+            joinColumns = @JoinColumn(name = "scheduleId"),
+            inverseJoinColumns = @JoinColumn(name = "pet_id")
+    )
     private List<Pet> pets;
-
-    @ManyToMany(mappedBy = "scheduleList")
-    private List<Customer> customers;
 
     private LocalDate date;
 
