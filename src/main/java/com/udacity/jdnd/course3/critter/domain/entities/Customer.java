@@ -8,7 +8,6 @@ import org.springframework.beans.BeanUtils;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -26,7 +25,7 @@ public class Customer extends User {
             fetch = FetchType.LAZY,
             orphanRemoval = true,
             targetEntity = Pet.class)
-    private List<Pet> pets = new ArrayList<>();
+    private List<Pet> petList = new ArrayList<>();
 
     @ManyToMany(
             cascade = CascadeType.ALL,
@@ -40,10 +39,10 @@ public class Customer extends User {
     public CustomerDTO toDto() {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(this, customerDTO);
-        customerDTO.setPetIds(this.pets.stream().map(Pet::getId).collect(Collectors.toList()));
+        customerDTO.setPetIds(this.petList.stream().map(Pet::getId).collect(Collectors.toList()));
         System.out.println();
-        System.out.println("CUSTOMER :: " + this);
-        System.out.println("CUSTOMER DTO :: " + customerDTO);
+        System.out.println("Customer " + this);
+        System.out.println("Customer DTO" + customerDTO);
         System.out.println();
         return customerDTO;
     }

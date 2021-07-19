@@ -94,8 +94,8 @@ public class CritterFunctionalTest {
         Assertions.assertEquals(newPet.getName(), pets.get(0).getName());
 
         //check to make sure customer now also contains pet
-        CustomerDTO retrievedCustomer = userController.getAllCustomers().get(0);
-        System.out.println(retrievedCustomer);
+        CustomerDTO retrievedCustomer = userController.getCustomerById(newCustomer.getId());
+
         Assertions.assertTrue(retrievedCustomer.getPetIds() != null && retrievedCustomer.getPetIds().size() > 0);
         Assertions.assertEquals(retrievedCustomer.getPetIds().get(0), retrievedPet.getId());
     }
@@ -126,6 +126,10 @@ public class CritterFunctionalTest {
         PetDTO petDTO = createPetDTO();
         petDTO.setOwnerId(newCustomer.getId());
         PetDTO newPet = petController.savePet(petDTO);
+
+        System.out.println("######");
+        userController.getAllCustomers().forEach(System.out::println);
+        System.out.println("######");
 
         CustomerDTO owner = userController.getOwnerByPet(newPet.getId());
         System.out.println("TEST CLASS :: owner :: " + owner);
@@ -249,6 +253,7 @@ public class CritterFunctionalTest {
         sched1.getPetIds().get(0);
 
         //Owner of the first pet will only be in schedule 1
+        System.out.println("GET OWNER BY PET :: " + userController.getOwnerByPet(sched1.getPetIds().get(0)));
         List<ScheduleDTO> scheds1c = scheduleController.getScheduleForCustomer(userController.getOwnerByPet(sched1.getPetIds().get(0)).getId());
         compareSchedules(sched1, scheds1c.get(0));
 

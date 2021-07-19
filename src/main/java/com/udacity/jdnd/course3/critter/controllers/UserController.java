@@ -43,6 +43,11 @@ public class UserController {
         return customerService.getAllCustomers();
     }
 
+    @GetMapping("/customer/{customerId}")
+    public CustomerDTO getCustomerById(@PathVariable Long customerId) {
+        return customerService.getCustomerById(customerId);
+    }
+
     @GetMapping("/employee")
     public List<EmployeeDTO> getAllEmployees() {
         return employeeService.getAllEmployees();

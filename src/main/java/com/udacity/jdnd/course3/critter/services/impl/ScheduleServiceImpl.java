@@ -67,7 +67,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 findById(customerId).
                 orElseThrow(() -> new CustomerNotFoundException(String.format(Messages.CUSTOMER_NOT_FOUND, customerId)));
         return customer.
-                getPets().
+                getPetList().
                 stream().
                 map(Pet::getScheduleList).
                 flatMap(Collection::stream).

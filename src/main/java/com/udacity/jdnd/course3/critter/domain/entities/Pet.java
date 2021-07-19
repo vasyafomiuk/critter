@@ -24,10 +24,8 @@ public class Pet {
 
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY,targetEntity = Customer.class)
     private Customer owner;
-//    @Column(name = "owner_id")
-//    private Long ownerId;
 
     private LocalDate birthDate;
 

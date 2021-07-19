@@ -25,18 +25,16 @@ public class Schedule {
 
     @ManyToMany
     @JoinTable(
-            name = "schedule_employee",
+            name = "employees_schedule",
             joinColumns = @JoinColumn(name = "scheduleId"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees;
 
     @ManyToMany
     @JoinTable(
-            name = "schedule_pet",
+            name = "pets_schedule",
             joinColumns = @JoinColumn(name = "scheduleId"),
-            inverseJoinColumns = @JoinColumn(name = "pet_id")
-    )
+            inverseJoinColumns = @JoinColumn(name = "pet_id"))
     private List<Pet> pets;
 
     private LocalDate date;

@@ -52,6 +52,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public CustomerDTO getCustomerById(Long customerId) {
+        return customerRepository.
+                findById(customerId).
+                orElseThrow(() -> new CustomerNotFoundException(String.format(CUSTOMER_NOT_FOUND, customerId))).
+                toDto();
+    }
+
+    @Override
     @Transactional
     public CustomerDTO getOwnerByPet(Long petId) {
         System.out.println("#### getOwnerByPet ####");
@@ -60,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
         System.out.println("#### getOwnerByPet ####");
         return customerRepository.findAll().
                 stream().
-                filter(p -> p.getPets().
+                filter(p -> p.getPetList().
                         stream().
                         anyMatch(o -> o.getId().equals(petId))).
                 findFirst().
