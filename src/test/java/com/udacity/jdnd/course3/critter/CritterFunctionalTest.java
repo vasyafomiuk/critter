@@ -215,8 +215,6 @@ public class CritterFunctionalTest {
     public void testFindScheduleByEntities() {
         ScheduleDTO sched1 = populateSchedule(1, 2, LocalDate.of(2019, 12, 25), Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.WALKING));
         ScheduleDTO sched2 = populateSchedule(3, 1, LocalDate.of(2019, 12, 26), Sets.newHashSet(EmployeeSkill.PETTING));
-        System.out.println("[sched1] " + sched1);
-        System.out.println("[sched2] " + sched2);
 
         //add a third schedule that shares some employees and pets with the other schedules
         ScheduleDTO sched3 = new ScheduleDTO();
@@ -251,9 +249,6 @@ public class CritterFunctionalTest {
         compareSchedules(sched3, scheds2p.get(1));
 
         //Owner of the first pet will only be in schedule 1
-        System.out.println("GET OWNER BY PET :: " + userController.getOwnerByPet(sched1.getPetIds().get(0)));
-        System.out.println("First pet id :: " + sched1.getPetIds().get(0));
-        System.out.println("Owner id :: " + userController.getOwnerByPet(sched1.getPetIds().get(0)).getId());
         List<ScheduleDTO> scheds1c = scheduleController.getScheduleForCustomer(userController.getOwnerByPet(sched1.getPetIds().get(0)).getId());
         System.out.println("scheds1c :: " + scheds1c);
         compareSchedules(sched1, scheds1c.get(0));
@@ -308,7 +303,6 @@ public class CritterFunctionalTest {
                 .map(e -> {
                     e.setSkills(activities);
                     e.setDaysAvailable(Sets.newHashSet(date.getDayOfWeek()));
-                    logger.info("[populateSchedule] employee created :: " + e);
                     return userController.saveEmployee(e).getId();
                 }).collect(Collectors.toList());
         CustomerDTO cust = userController.saveCustomer(createCustomerDTO());
@@ -316,7 +310,6 @@ public class CritterFunctionalTest {
                 .mapToObj(i -> createPetDTO())
                 .map(p -> {
                     p.setOwnerId(cust.getId());
-                    logger.info("[populateSchedule] pet created :: " + p);
                     return petController.savePet(p).getId();
                 }).collect(Collectors.toList());
         return scheduleController.createSchedule(createScheduleDTO(petIds, employeeIds, date, activities));

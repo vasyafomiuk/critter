@@ -74,15 +74,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         Customer customer = customerRepository.
                 findById(customerId).
                 orElseThrow(() -> new CustomerNotFoundException(String.format(Messages.CUSTOMER_NOT_FOUND, customerId)));
-        System.out.println("[getScheduleForCustomer] :: "+customer);
         return customer.
                 getPetList().
                 stream().
-                map(Pet::getScheduleList).
-                flatMap(Collection::stream).
-                map(Schedule::toDto).
+                map(scheduleRepository::findByPetsContains).
+                flatMap(Collection::stream).map(Schedule::toDto).
                 collect(Collectors.toList());
-
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "scheduleList")
+@ToString
 @DiscriminatorValue("customer")
 public class Customer extends User {
     private String phoneNumber;
@@ -29,14 +29,6 @@ public class Customer extends User {
             targetEntity = Pet.class)
     private List<Pet> petList = new ArrayList<>();
 
-    @ManyToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "customers_schedule",
-            joinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id")
-    )
-    private List<Schedule> scheduleList = new ArrayList<>();
 
     public CustomerDTO toDto() {
         CustomerDTO customerDTO = new CustomerDTO();
