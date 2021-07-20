@@ -16,6 +16,7 @@ import static com.udacity.jdnd.course3.critter.consts.Messages.CUSTOMER_FOR_PET_
 import static com.udacity.jdnd.course3.critter.consts.Messages.CUSTOMER_NOT_FOUND;
 
 @Service
+@Transactional
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
 

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 import static com.udacity.jdnd.course3.critter.consts.Messages.EMPLOYEE_NOT_FOUND;
 
 @Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
     private static Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
     private final EmployeeRepository employeeRepository;

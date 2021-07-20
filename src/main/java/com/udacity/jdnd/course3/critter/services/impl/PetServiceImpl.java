@@ -12,8 +12,8 @@ import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import com.udacity.jdnd.course3.critter.services.PetService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +21,7 @@ import static com.udacity.jdnd.course3.critter.consts.Messages.CUSTOMER_NOT_FOUN
 import static com.udacity.jdnd.course3.critter.consts.Messages.PET_NOT_FOUND;
 
 @Service
+@Transactional
 public class PetServiceImpl implements PetService {
     private final PetRepository petRepository;
     private final CustomerRepository customerRepository;
