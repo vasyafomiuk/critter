@@ -80,7 +80,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 getPetList().
                 stream().
                 map(scheduleRepository::findByPetsContains).
-                flatMap(Collection::stream).map(Schedule::toDto).
+                flatMap(Collection::stream).
+                map(Schedule::toDto).
                 collect(Collectors.toList());
     }
 

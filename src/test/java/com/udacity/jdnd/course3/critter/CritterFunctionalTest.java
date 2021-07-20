@@ -9,16 +9,10 @@ import com.udacity.jdnd.course3.critter.dto.*;
 import com.udacity.jdnd.course3.critter.domain.enums.PetType;
 import com.udacity.jdnd.course3.critter.controllers.ScheduleController;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
@@ -46,12 +40,6 @@ public class CritterFunctionalTest {
 
     @Autowired
     private ScheduleController scheduleController;
-
-    @PersistenceContext
-    private EntityManager em;
-
-    private static final Logger logger = LoggerFactory.getLogger(CritterFunctionalTest.class);
-
 
     @Test
     public void testCreateCustomer() {
@@ -321,10 +309,4 @@ public class CritterFunctionalTest {
         Assertions.assertEquals(sched1.getEmployeeIds(), sched2.getEmployeeIds());
         Assertions.assertEquals(sched1.getDate(), sched2.getDate());
     }
-
-    private void flushAndClear() {
-        em.flush();
-        em.clear();
-    }
-
 }
