@@ -39,6 +39,14 @@ public class PetServiceImpl implements PetService {
                 orElseThrow(() -> new CustomerNotFoundException(String.format(CUSTOMER_NOT_FOUND, petDTO.getOwnerId())));
         pet.setOwner(customer);
         pet = petRepository.save(pet);
+
+        Customer petOwner = pet.getOwner();
+
+        if (petOwner != null) {
+            petOwner.getPetList().add(pet);
+            customerRepository.save(petOwner);
+        }
+
         return pet.toDto();
     }
 
@@ -74,11 +82,6 @@ public class PetServiceImpl implements PetService {
         Pet pet = petRepository.
                 findById(petId).
                 orElseThrow(() -> new PetNotFoundException(String.format(PET_NOT_FOUND, petId)));
-        System.out.println("[pet service] PET :: " + pet);
         return pet.getOwner().toDto();
-//        return petRepository.findById(petId).
-//                orElseThrow(() -> new CustomerNotFoundException(String.format(PET_NOT_FOUND, petId))).
-//                getOwner().
-//                toDto();
     }
 }

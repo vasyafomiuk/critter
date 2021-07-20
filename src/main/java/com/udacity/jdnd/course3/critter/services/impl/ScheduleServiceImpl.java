@@ -41,14 +41,22 @@ public class ScheduleServiceImpl implements ScheduleService {
     public ScheduleDTO createSchedule(ScheduleDTO scheduleDTO) {
         Schedule schedule = new Schedule();
         BeanUtils.copyProperties(scheduleDTO, schedule);
-        if (Objects.nonNull(scheduleDTO.getEmployeeIds()) && !scheduleDTO.getEmployeeIds().isEmpty()) {
-            schedule.setEmployees(employeeRepository.findAllById(scheduleDTO.getEmployeeIds()));
+
+        if (Objects.nonNull(scheduleDTO.getEmployeeIds())) {
+            List<Employee> employees = employeeRepository.findAllById(scheduleDTO.getEmployeeIds());
+            employees.forEach(e -> e.addSchedule(schedule));
+            schedule.setEmployees(employees);
+            employeeRepository.saveAll(employees);
         }
-        if (Objects.nonNull(scheduleDTO.getPetIds()) && !scheduleDTO.getPetIds().isEmpty()) {
-            schedule.setPets(petRepository.findAllById(scheduleDTO.getPetIds()));
+        if (Objects.nonNull(scheduleDTO.getPetIds())) {
+            List<Pet> pets = petRepository.findAllById(scheduleDTO.getPetIds());
+            pets.forEach(p -> p.addSchedule(schedule));
+            schedule.setPets(pets);
+            petRepository.saveAll(pets);
         }
         return scheduleRepository.save(schedule).toDto();
     }
+
 
     @Override
     public List<ScheduleDTO> getScheduleForEmployee(Long employeeId) {
@@ -66,6 +74,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         Customer customer = customerRepository.
                 findById(customerId).
                 orElseThrow(() -> new CustomerNotFoundException(String.format(Messages.CUSTOMER_NOT_FOUND, customerId)));
+        System.out.println("[getScheduleForCustomer] :: "+customer);
         return customer.
                 getPetList().
                 stream().

@@ -18,7 +18,7 @@ import java.util.TreeSet;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "scheduleList")
 public class Employee extends User {
     @ElementCollection(targetClass = EmployeeSkill.class, fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
@@ -35,9 +35,15 @@ public class Employee extends User {
     @ManyToMany(mappedBy = "employees")
     private List<Schedule> scheduleList = new ArrayList<>();
 
+    public List<Schedule> addSchedule(Schedule schedule) {
+        scheduleList.add(schedule);
+        return scheduleList;
+    }
+
     public EmployeeDTO toDto() {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         BeanUtils.copyProperties(this, employeeDTO);
+        employeeDTO.setId(this.getId());
         return employeeDTO;
     }
 

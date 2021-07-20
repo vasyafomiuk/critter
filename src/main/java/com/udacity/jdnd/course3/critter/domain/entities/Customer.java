@@ -13,7 +13,9 @@ import java.util.stream.Collectors;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString(exclude = "scheduleList")
 @DiscriminatorValue("customer")
 public class Customer extends User {
     private String phoneNumber;
@@ -40,10 +42,6 @@ public class Customer extends User {
         CustomerDTO customerDTO = new CustomerDTO();
         BeanUtils.copyProperties(this, customerDTO);
         customerDTO.setPetIds(this.petList.stream().map(Pet::getId).collect(Collectors.toList()));
-        System.out.println();
-        System.out.println("Customer " + this);
-        System.out.println("Customer DTO" + customerDTO);
-        System.out.println();
         return customerDTO;
     }
 

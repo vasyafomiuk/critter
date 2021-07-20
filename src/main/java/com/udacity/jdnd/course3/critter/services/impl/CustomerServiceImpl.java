@@ -62,10 +62,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public CustomerDTO getOwnerByPet(Long petId) {
-        System.out.println("#### getOwnerByPet ####");
-        List<Customer> customers = customerRepository.findAll();
-        customers.forEach(System.out::println);
-        System.out.println("#### getOwnerByPet ####");
         return customerRepository.findAll().
                 stream().
                 filter(p -> p.getPetList().

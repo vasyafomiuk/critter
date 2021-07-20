@@ -54,7 +54,6 @@ public class CritterFunctionalTest {
 
 
     @Test
-    @Order(0)
     public void testCreateCustomer() {
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
@@ -205,7 +204,7 @@ public class CritterFunctionalTest {
 
         scheduleController.createSchedule(createScheduleDTO(petList, employeeList, date, skillSet));
         ScheduleDTO scheduleDTO = scheduleController.getAllSchedules().get(0);
-
+        System.out.println(scheduleDTO);
         Assertions.assertEquals(scheduleDTO.getActivities(), skillSet);
         Assertions.assertEquals(scheduleDTO.getDate(), date);
         Assertions.assertEquals(scheduleDTO.getEmployeeIds(), employeeList);
@@ -216,6 +215,8 @@ public class CritterFunctionalTest {
     public void testFindScheduleByEntities() {
         ScheduleDTO sched1 = populateSchedule(1, 2, LocalDate.of(2019, 12, 25), Sets.newHashSet(EmployeeSkill.FEEDING, EmployeeSkill.WALKING));
         ScheduleDTO sched2 = populateSchedule(3, 1, LocalDate.of(2019, 12, 26), Sets.newHashSet(EmployeeSkill.PETTING));
+        System.out.println("[sched1] " + sched1);
+        System.out.println("[sched2] " + sched2);
 
         //add a third schedule that shares some employees and pets with the other schedules
         ScheduleDTO sched3 = new ScheduleDTO();
@@ -249,12 +250,12 @@ public class CritterFunctionalTest {
         compareSchedules(sched2, scheds2p.get(0));
         compareSchedules(sched3, scheds2p.get(1));
 
-        System.out.println("get pet ids :: " + sched1.getPetIds());
-        sched1.getPetIds().get(0);
-
         //Owner of the first pet will only be in schedule 1
         System.out.println("GET OWNER BY PET :: " + userController.getOwnerByPet(sched1.getPetIds().get(0)));
+        System.out.println("First pet id :: " + sched1.getPetIds().get(0));
+        System.out.println("Owner id :: " + userController.getOwnerByPet(sched1.getPetIds().get(0)).getId());
         List<ScheduleDTO> scheds1c = scheduleController.getScheduleForCustomer(userController.getOwnerByPet(sched1.getPetIds().get(0)).getId());
+        System.out.println("scheds1c :: " + scheds1c);
         compareSchedules(sched1, scheds1c.get(0));
 
         //Owner of pet from schedule 2 will be in both schedules 2 and 3

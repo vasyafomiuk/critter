@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "owner")
+@ToString(exclude = {"owner", "scheduleList"})
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Pet {
 
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY,targetEntity = Customer.class)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Customer.class)
     private Customer owner;
 
     private LocalDate birthDate;
@@ -36,6 +36,11 @@ public class Pet {
 
     @ManyToMany(mappedBy = "pets")
     private List<Schedule> scheduleList = new ArrayList<>();
+
+    public List<Schedule> addSchedule(Schedule schedule) {
+        scheduleList.add(schedule);
+        return this.scheduleList;
+    }
 
     public PetDTO toDto() {
         PetDTO petDTO = new PetDTO();
